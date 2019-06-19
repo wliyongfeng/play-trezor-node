@@ -1,0 +1,11 @@
+{
+  "name": "play-trezor-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "filter-console": "^0.1.1",
+    "trezor.js": "^8.1.0"
+  }
+}
