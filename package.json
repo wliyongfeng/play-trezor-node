@@ -5,7 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "bitcoinjs-lib": "4.0.2",
+    "buffer-reverse": "^1.0.1",
     "filter-console": "^0.1.1",
-    "trezor.js": "^8.1.0"
+    "trezor.js": "git+https://github.com/chainpool/trezor.js.git#electron"
   }
 }
