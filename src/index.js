@@ -20,7 +20,7 @@ function getNode(xpub) {
 
 const trezor = require('trezor.js');
 
-const list = new trezor.DeviceList({ debug: true });
+const list = new trezor.DeviceList({ debug: false });
 const debug = true;
 
 const hardeningConstant = 0x80000000;
@@ -90,7 +90,6 @@ function bjsTx2refTx(tx) {
     version_group_id: tx.isZcashTransaction() ? parseInt(tx.versionGroupId, 16) : null
   };
 }
-
 
 list.on('connect', function (device) {
   if (debug) {
