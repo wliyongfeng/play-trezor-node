@@ -3,7 +3,20 @@ const reverse = require("buffer-reverse")
 const filterConsole = require('filter-console');
 filterConsole([/^\[trezor-link].*/]);
 
+const network = bitcoin.networks.testnet;
+
 console.log("trezor-link ...........")
+
+function getNode(xpub) {
+  const hd = bitcoin.HDNode.fromBase58(xpub, network);
+  return {
+    depth: hd.depth,
+    child_num: hd.index,
+    fingerprint: hd.parentFingerprint,
+    public_key: hd.keyPair.getPublicKeyBuffer().toString('hex'),
+    chain_code: hd.chainCode.toString('hex'),
+  };
+}
 
 const trezor = require('trezor.js');
 
@@ -12,29 +25,72 @@ const debug = true;
 
 const hardeningConstant = 0x80000000;
 const path = [
-  (44 | hardeningConstant) >>> 0,
+  (45 | hardeningConstant) >>> 0,
   (1 | hardeningConstant) >>> 0,
   (0 | hardeningConstant) >>> 0,
   0,
   0
 ];
-const info = {
-  inputs: [{
-    hash: reverse(Buffer.from("3b318325e39094ca99ac6ca1f2031f8e1a4af565b210c66885bdebfbd3e46a77", "hex")),
-    index: 0,
-    path
-  }],
-  outputs: [
+
+const multisig = {
+  pubkeys: [
     {
-      value: 900000,
-      address: "mqj6dQ2gxY4ZgGYvD5LDN3L13yA1L52EEX"
+      node: getNode("tpubDH8Yi5vViTRqpeVPRxEfvmxGdxkcpECmoSJxvVPRjMiYPqTnCGEnf9DLKpD6ynuNCif7U6pGgZAbbZD7N6VoRLyUENv57GvJBAjRvE7ejfD"),
+      address_n: [],
+    },
+    {
+      node: getNode("tpubDH8Yi5vViTRqrVjPmpn3XQi9MkRUhJhFXPWjyJPDqkknRkB7PKW7rJ4coTzPHZ4UuzWM8fXovCZGkH6JEd5dE6aj6efWvNghAkJm3pKT35F"),
+      address_n: [],
     }
-  ]
+  ],
+  signatures: ["", ""],
+  m: 1
 }
 
-const raw = "020000000248ca611052da1ecdd8cd988338ddc91a1835ec593b2a468d464ff0d174ab2166010000006b483045022100e8a58d62ad7aeeb38de24682510f6894de16a6c4993c3a61d4b99a568e8684e2022043b9a2845f2e0281539fcb2518f6fc7f97bf524c63a3ea6bf62e50a8280102150121034054cbf47712cb313eeba19d52941008fdf8460481049985221e0fc5a3e7e889000000006cda9ec20e3298876b0ba9874ee1b6b66f1f12deec4fbf8dbd791f6e82b227f6010000006b483045022100f238e3180d463b32d1188749faae0df579ca38e898f8f38a4bd5bf83f918365e022074036e31d8b41d4a5a3a83665073ff9ce16978b874672f90e9342d893ea8200d0121034054cbf47712cb313eeba19d52941008fdf8460481049985221e0fc5a3e7e889000000000240420f00000000001976a914701b7d562f80c8ed5a0b2456e9778bd37447dba288ac181f0f00000000001976a9146ffd34b262b5099b80f8e84fe7e5dccaa79e2e7a88ac00000000";
-const refTxs = [bitcoin.Transaction.fromHex(raw)];
-const network = bitcoin.networks.testnet;
+const inputs = [{
+  address_n: path,
+  prev_index: 0,
+  prev_hash: '33af6aa20248f18579309e960934f464e20a30736b2e3431b1a5e121688c0a3b',
+  multisig,
+  script_type: 'SPENDMULTISIG',
+}];
+
+const outputs = [
+  {
+    amount: 900000,
+    address: "mqj6dQ2gxY4ZgGYvD5LDN3L13yA1L52EEX",
+    script_type: 'PAYTOADDRESS'
+  }
+];
+
+const raw = "020000000274e5c1511ef978426cfcf17582f8b00f3738c27d1d78de95533348d5ed5295b4000000006b483045022100d418e793393baa083a5313d1b32b8cbf3896f97e187243743e1c45f0adbe94e702202cc1fb6a10a309dfa33fc7b95c9181dfcc82daccdfc23b1e3f29ed053460881c0121034054cbf47712cb313eeba19d52941008fdf8460481049985221e0fc5a3e7e88900000000776ae4d3fbebbd8568c610b265f54a1a8e1f03f2a16cac99ca9490e32583313b010000006a473044022004c3ac43d47d269fa144c290650e43977cbd173d303fefbf1a8becb0c0fa29b502201e63578a15a4ac4b3cae8cba4bfd3fc78d2910f738ff3d8d95769c189d530a5f0121034054cbf47712cb313eeba19d52941008fdf8460481049985221e0fc5a3e7e889000000000240420f000000000017a9142944aac6e59e6e75619cf7962a9236ae5993a7ce8738790d00000000001976a9146ffd34b262b5099b80f8e84fe7e5dccaa79e2e7a88ac00000000";
+const txs = [bitcoin.Transaction.fromHex(raw)].map(bjsTx2refTx);
+
+function bjsTx2refTx(tx) {
+  const extraData = tx.getExtraData();
+  return {
+    lock_time: tx.locktime,
+    version: tx.isDashSpecialTransaction() ? tx.version | tx.dashType << 16 : tx.version,
+    hash: tx.getId(),
+    inputs: tx.ins.map(function (input) {
+      return {
+        prev_index: input.index,
+        sequence: input.sequence,
+        prev_hash: reverse(input.hash).toString('hex'),
+        script_sig: input.script.toString('hex')
+      };
+    }),
+    bin_outputs: tx.outs.map(function (output) {
+      return {
+        amount: output.value,
+        script_pubkey: output.script.toString('hex')
+      };
+    }),
+    extra_data: extraData ? extraData.toString('hex') : null,
+    version_group_id: tx.isZcashTransaction() ? parseInt(tx.versionGroupId, 16) : null
+  };
+}
+
 
 list.on('connect', function (device) {
   if (debug) {
@@ -64,11 +120,12 @@ list.on('connect', function (device) {
 
   // Ask the device to show first address of first account on display and return it
   return device.waitForSessionAndRun(function (session) {
-    return session.signBjsTx(info, refTxs, [], "testnet", network);
+    return session.signTx(inputs, outputs, txs, "testnet");
   })
     .then(function (result) {
       console.log("result", result)
-      const txb = bitcoin.TransactionBuilder.fromTransaction(result, network)
+      const tx = bitcoin.Transaction.fromHex(result.message.serialized.serialized_tx);
+      const txb = bitcoin.TransactionBuilder.fromTransaction(tx, network)
       console.log(txb)
     })
 
