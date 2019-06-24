@@ -137,10 +137,9 @@ bitcoinjs-lib-zcash@^3.6.1:
     varuint-bitcoin "^1.0.4"
     wif "^2.0.1"
 
-bitcoinjs-lib@4.0.2:
+"bitcoinjs-lib@git+https://github.com/chainpool/bitcoinjs-lib.git#electron":
   version "4.0.2"
-  resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-4.0.2.tgz#84fc9d14774c07581ad1795f2444706fc3f7a666"
-  integrity sha512-Y6AW91WPDoDQQLy4FejVoH4NvENqvMy+Q/8mnakEzckG1NXiLo0VgnEZyuvZb6lkhE2+YxzTCgpqzbnerOSpEg==
+  resolved "git+https://github.com/chainpool/bitcoinjs-lib.git#e51c361601d3f70ddb99b908bbd28c0613f93ae5"
   dependencies:
     bech32 "^1.1.2"
     bip32 "^1.0.0"
@@ -158,6 +157,18 @@ bitcoinjs-lib@4.0.2:
     varuint-bitcoin "^1.0.4"
     wif "^2.0.1"
 
+bitcore-lib@^8.3.4:
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/bitcore-lib/-/bitcore-lib-8.3.4.tgz#9a50bbbcc0e661886d26a5a2358f83653e893d9d"
+  integrity sha512-4wMOn3/QnzXhNwj/GONKz7T0WIlWMYChuYrYc4c/cL0Dz0jlHsd2KFkh/98qfG+/MlQOfeemx/g8D1qg1euLtQ==
+  dependencies:
+    bn.js "=4.11.8"
+    bs58 "^4.0.1"
+    buffer-compare "=1.1.1"
+    elliptic "=6.4.0"
+    inherits "=2.0.1"
+    lodash "=4.17.11"
+
 blake2b-wasm@^1.1.0:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/blake2b-wasm/-/blake2b-wasm-1.1.7.tgz#e4d075da10068e5d4c3ec1fb9accc4d186c55d81"
@@ -173,7 +184,7 @@ blake2b@^2.1.2:
     blake2b-wasm "^1.1.0"
     nanoassert "^1.0.0"
 
-bn.js@^4.11.8, bn.js@^4.4.0:
+bn.js@=4.11.8, bn.js@^4.11.8, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
@@ -199,7 +210,7 @@ bs58@0.3.x:
     bigi "0.2.0"
     binstring "~0.2.0"
 
-bs58@^4.0.0:
+bs58@^4.0.0, bs58@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/bs58/-/bs58-4.0.1.tgz#be161e76c354f6f788ae4071f63f34e8c4f0a42a"
   integrity sha1-vhYedsNU9veIrkBx9j806MTwpCo=
@@ -214,6 +225,11 @@ bs58check@<3.0.0, bs58check@^2.0.0, bs58check@^2.1.1, bs58check@^2.1.2:
     bs58 "^4.0.0"
     create-hash "^1.1.0"
     safe-buffer "^5.1.2"
+
+buffer-compare@=1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/buffer-compare/-/buffer-compare-1.1.1.tgz#5be7be853af89198d1f4ddc090d1d66a48aef596"
+  integrity sha1-W+e+hTr4kZjR9N3AkNHWakiu9ZY=
 
 buffer-reverse@^1.0.1:
   version "1.0.1"
@@ -401,6 +417,19 @@ editorconfig@^0.15.3:
     semver "^5.6.0"
     sigmund "^1.0.1"
 
+elliptic@=6.4.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.4.0.tgz#cac9af8762c85836187003c8dfe193e5e2eae5df"
+  integrity sha1-ysmvh2LIWDYYcAPI3+GT5eLq5d8=
+  dependencies:
+    bn.js "^4.4.0"
+    brorand "^1.0.1"
+    hash.js "^1.0.0"
+    hmac-drbg "^1.0.0"
+    inherits "^2.0.1"
+    minimalistic-assert "^1.0.0"
+    minimalistic-crypto-utils "^1.0.0"
+
 elliptic@^6.4.0:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.4.1.tgz#c2d0b7776911b86722c632c3c06c60f2f819939a"
@@ -531,6 +560,11 @@ inherits@2, inherits@^2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
+inherits@=2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.1.tgz#b17d08d326b4423e568eff719f91b0b1cbdf69f1"
+  integrity sha1-sX0I0ya0Qj5Wjv9xn5GwscvfafE=
+
 inherits@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
@@ -592,6 +626,11 @@ jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
+
+lodash@=4.17.11:
+  version "4.17.11"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
+  integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
 "long@~2 >=2.2.3":
   version "2.4.0"

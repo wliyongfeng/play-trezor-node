@@ -39,7 +39,7 @@ const multisig = {
       address_n: [],
     },
     {
-      node: getNode("tpubDH8Yi5vViTRqrVjPmpn3XQi9MkRUhJhFXPWjyJPDqkknRkB7PKW7rJ4coTzPHZ4UuzWM8fXovCZGkH6JEd5dE6aj6efWvNghAkJm3pKT35F"),
+      node: getNode("tpubD6NzVbkrYhZ4WLczPJWReQycCJdd6YVWXubbVUFnJ5KgU5MDQrD998ZJLSMYL4tvPbyA8TgRRbz63nws1UVmGpSu8L1TtcApQZ5P1MqBpDw"),
       address_n: [],
     }
   ],
