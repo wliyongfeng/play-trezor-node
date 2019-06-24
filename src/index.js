@@ -91,7 +91,7 @@ function bjsTx2refTx(tx) {
   };
 }
 
-list.on('connect', function (device) {
+list.on('connect', async function (device) {
   if (debug) {
     console.log('Connected a device:', device);
     console.log('Devices:', list.asArray());
@@ -116,6 +116,11 @@ list.on('connect', function (device) {
     throw new Error('Device is in bootloader mode, re-connected it');
   }
 
+  const pubResult = await device.waitForSessionAndRun(function (session) {
+    return session.getPublicKey(path, "testnet")
+  })
+
+  console.log(pubResult);
 
   // Ask the device to show first address of first account on display and return it
   return device.waitForSessionAndRun(function (session) {
